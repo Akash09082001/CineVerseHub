@@ -6,23 +6,26 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import VideoList from '../components/VideoList';
+import CastList from '../components/CastList';
 
 const style = {
+    display: 'flex',
+    flexDirection: 'column',
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 'auto',
+    color: 'black',
     bgcolor: 'white',
-    border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
+    gap: '10px',
+    p: 2,
 };
 
 function Post() {
     const { slug } = useParams();
     const [movieData, setMovieData] = useState(null);
-    const [casts, setCasts] = useState([])
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -38,7 +41,6 @@ function Post() {
                 const data = await response.json();
                 console.log(data);
                 setMovieData(data);
-                getMovieCast()
             } catch (error) {
                 console.error(error);
             }
@@ -46,20 +48,6 @@ function Post() {
 
         fetchData();
     }, [slug]);
-
-    const getMovieCast = () => {
-        try {
-            fetch(`https://api.themoviedb.org/3/movie/${slug}/credits?api_key=532cba508f60c0af7df2fca57657a04b`)
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data)
-                    setCasts(data.cast)
-                })
-
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
     if (!movieData) {
         return <div>Loading...</div>;
@@ -134,9 +122,21 @@ function Post() {
                                 <Typography id="transition-modal-title" variant="h6" component="h2">
                                     {movieData.title}
                                 </Typography>
-                                <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                                    <iframe src="" frameborder="0"></iframe>
+                                <Typography id="transition-modal-description" sx={{}}>
+                                    {movieData.videos && movieData.videos.results && movieData.videos.results.length > 0 && (
+                                        <div className="flex w-96 aspect-video rounded-md">
+                                            <iframe
+                                                title={movieData.videos.results[0].name}
+                                                className='flex h-full w-full rounded-md'
+                                                src={`https://www.youtube.com/embed/${movieData.videos.results[0].key}`}
+                                                frameBorder="0"
+                                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen
+                                            ></iframe>
+                                        </div>
+                                    )}
                                 </Typography>
+
                             </Box>
                         </Fade>
                     </Modal>
@@ -144,29 +144,15 @@ function Post() {
                         <div className="flex w-full">
                             <h2 className='flex text-2xl font-bold'>Movie Cast</h2>
                         </div>
-                        <div className="flex w-full h-fit overflow-x-scroll overflow-y-hidden pb-3">
-                            <ul className='flex w-fit h-auto gap-3 justify-start'>
-                                {casts
-                                    .filter(cast => cast.profile_path)
-                                    .map(cast => (
-                                        <li key={cast.id ? cast.id : null} className='flex flex-col h-fit w-48 bg-white rounded-md'>
-                                            <div className="flex w-full h-fit rounded-md">
-                                                <img src={`https://image.tmdb.org/t/p/original/${cast.profile_path}`} loading='lazy' alt={cast.name} className='flex w-full h-full object-contain rounded-md' />
-                                            </div>
-                                            <div className="flex text-black py-1 gap-0.5 px-3 h-fit w-full flex-col ">
-                                                <strong className='text-sm'>{cast.name}</strong>
-                                                <span className='text-xs'>{cast.character}</span>
-                                            </div>
-                                        </li>
-                                    ))}
-                            </ul>
+                        <div className="flex w-full h-fit">
+                            <CastList />
                         </div>
                     </div>
                     <div className="flex flex-col w-full  gap-5 ">
                         <div className="flex w-full">
                             <h2 className='flex text-2xl font-bold'>Movie Videos</h2>
                         </div>
-                        <div className="flex w-full h-fit overflow-x-scroll overflow-y-hidden pb-3">
+                        <div className="flex w-full h-fit ">
                             <VideoList videos={movieData.videos.results} />
                         </div>
                     </div>
