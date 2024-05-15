@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import Hero from '../components/Hero';
+import toast from 'react-hot-toast'
 
 const Login = () => {
 
@@ -23,13 +24,14 @@ const Login = () => {
             navigate("/");
         } catch (error) {
             console.error(error);
+            toast.error("Logged in Error")
         }
     }
 
     return (
         <Hero>
-            <div className='flex flex-col w-full h-fit gap-5 px-5 py-10 rounded-xl backdrop-blur-sm bg-[rgba(246,244,244,0.09)] max-w-xs'>
 
+            <div className='flex flex-col w-full h-fit gap-5 px-5 py-10 rounded-xl backdrop-blur-sm bg-[rgba(246,244,244,0.09)] max-w-xs'>
                 <div className="flex w-full items-center justify-center">
                     <h2 className='text-2xl font-bold text-white '>Login</h2>
                 </div>

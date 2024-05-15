@@ -11,23 +11,10 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import PageNotFound from './pages/PageNotFound';
-import { ThemeProvider } from '@material-tailwind/react';
-import { black } from 'tailwindcss/colors';
 import AllPosts from './pages/AllPost';
 import Post from './pages/Post';
+import Dashboard from './pages/Dashboard';
 
-// const router = createBrowserRouter(
-//   createRoutesFromElements(
-//     <Route path="/" element={<App />}>
-//       <Route path="signup" element={<Signup />} />
-//       <Route path="login" element={<Login />} />
-//       <Route path="/" element={<Protected />} >
-//         <Route path="/" index element={<Home />} />
-//         <Route path="/home" index element={<Home />} />
-//       </Route>
-//     </Route>
-//   )
-// );
 const router = createBrowserRouter([
   {
     path: "/",
@@ -55,6 +42,12 @@ const router = createBrowserRouter([
             errorElement: <PageNotFound />,
           },
           {
+            path: "/dashboard",
+            index: true,
+            element: <Dashboard />,
+            errorElement: <PageNotFound />,
+          },
+          {
             path: "/home",
             index: true,
             element: <Home />,
@@ -76,14 +69,9 @@ const router = createBrowserRouter([
   },
 ]);
 
-const customTheme = {
-  black
-}
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ThemeProvider value={customTheme} >
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );

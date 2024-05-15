@@ -39,7 +39,7 @@ const SwiperSlider = ({ slides }) => {
                     alt={slides[currentIndex].title}
                 />
             </div>
-            <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-40 flex items-center justify-center ">
+            <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 flex items-center justify-center ">
                 <div className=" flex h-full flex-col w-full max-w-7xl mx-auto p-4 rounded">
                     <div className="flex w-full">
                         <h2 className='text-2xl md:text-3xl lg:text-4xl w-fit mx-auto font-bold'>
